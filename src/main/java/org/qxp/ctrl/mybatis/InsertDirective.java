@@ -11,12 +11,11 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
-public class SelectDirective implements TemplateDirectiveModel{
+public class InsertDirective implements TemplateDirectiveModel{
 
 	private static final String ID = "findUser";
 	private static final String RESULT_TYPE = "java.lang.Integer";
 	private static final String SQL = "select * from tb_user";
-	private static final String FLUSH_CACHE = "flushCache";
 	
 	@SuppressWarnings({ "rawtypes", "deprecation" })
 	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
