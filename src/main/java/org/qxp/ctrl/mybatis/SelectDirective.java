@@ -1,7 +1,13 @@
 package org.qxp.ctrl.mybatis;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.qxp.ctrl.mybatis.po.Select;
+import org.qxp.ctrl.util.Log;
 
 import freemarker.core.Environment;
 import freemarker.template.ObjectWrapper;
@@ -13,22 +19,48 @@ import freemarker.template.TemplateModelException;
 
 public class SelectDirective implements TemplateDirectiveModel{
 
-	private static final String ID = "findUser";
-	private static final String RESULT_TYPE = "java.lang.Integer";
-	private static final String SQL = "select * from tb_user";
-	private static final String FLUSH_CACHE = "flushCache";
+	private List<Select> list;
+	
+	public SelectDirective(List<Select> list){
+		this.list = list;
+	}
 	
 	@SuppressWarnings({ "rawtypes", "deprecation" })
 	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
 			throws TemplateException, IOException {
 		if(null == body){
-			throw new TemplateModelException("body null");
+			throw new TemplateModelException("body is null");
+		}if(null == list){
+			throw new TemplateModelException("select list is null");
 		}else{
-			env.setVariable("id", ObjectWrapper.DEFAULT_WRAPPER.wrap(ID));
-			env.setVariable("resultType", ObjectWrapper.DEFAULT_WRAPPER.wrap(RESULT_TYPE));
-			env.setVariable("sql", ObjectWrapper.DEFAULT_WRAPPER.wrap(SQL));
+			list = formatSelectModel(list);
+			env.setVariable("selectList", ObjectWrapper.DEFAULT_WRAPPER.wrap(list));
 			body.render(env.getOut());
 		}
 	}
 
+	private List<Select> formatSelectModel(List<Select> list){
+		 Iterator<Select> iter = list.iterator();  
+		 while(iter.hasNext()){  
+			 Select s = iter.next();
+			 String id = s.getId();
+			 String resultType = s.getResultType();
+			 String resultMap = s.getResultMap();
+			 String sql = s.getSql();
+			 if(null == id || null == sql || (null == resultType && null == resultMap) || (null != resultType && null != resultMap)){
+				logger.warn("SelectModel Must include id,resultType/resultMap,sql");
+				 iter.remove();  
+			 }
+		 }
+		 return list;
+	}
+	public List<Select> getList() {
+		return list;
+	}
+
+	public void setList(List<Select> list) {
+		this.list = list;
+	}
+
+	private static final Logger logger= Log.getLogger(SelectDirective.class);
 }

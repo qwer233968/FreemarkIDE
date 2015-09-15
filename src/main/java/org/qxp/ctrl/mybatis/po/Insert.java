@@ -39,4 +39,9 @@ public class Insert {
 		this.statementType = statementType;
 	}
 	
+	@Override
+	public String toString() {
+		return "id=\"" + this.id + "\"";
+	}
+	
 }
