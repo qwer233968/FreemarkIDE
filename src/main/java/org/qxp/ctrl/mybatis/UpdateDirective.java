@@ -21,6 +21,10 @@ public class UpdateDirective implements TemplateDirectiveModel{
 	
 	private List<Update> list;
 	
+	public UpdateDirective(List<Update> list){
+		this.list = list;
+	}
+	
 	@SuppressWarnings({ "rawtypes", "deprecation" })
 	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
 			throws TemplateException, IOException {

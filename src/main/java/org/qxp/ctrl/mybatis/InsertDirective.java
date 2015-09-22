@@ -21,6 +21,10 @@ public class InsertDirective implements TemplateDirectiveModel{
 	
 	private List<Insert> list;
 	
+	public InsertDirective(List<Insert> list){
+		this.list = list;
+	}
+	
 	@SuppressWarnings({ "rawtypes", "deprecation" })
 	public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
 			throws TemplateException, IOException {
