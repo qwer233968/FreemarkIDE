@@ -11,13 +11,13 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.qxp.ctrl.mybatis.InsertDirective;
-import org.qxp.ctrl.mybatis.MapperDirective;
-import org.qxp.ctrl.mybatis.SelectDirective;
-import org.qxp.ctrl.mybatis.UpdateDirective;
-import org.qxp.ctrl.mybatis.po.Insert;
-import org.qxp.ctrl.mybatis.po.Select;
-import org.qxp.ctrl.mybatis.po.Update;
+import org.qxp.ctrl.mybatis.xml.InsertDirective;
+import org.qxp.ctrl.mybatis.xml.MapperDirective;
+import org.qxp.ctrl.mybatis.xml.SelectDirective;
+import org.qxp.ctrl.mybatis.xml.UpdateDirective;
+import org.qxp.ctrl.mybatis.xml.po.Insert;
+import org.qxp.ctrl.mybatis.xml.po.Select;
+import org.qxp.ctrl.mybatis.xml.po.Update;
 import org.qxp.ctrl.util.CommUtil;
 import org.qxp.ctrl.util.Log;
 

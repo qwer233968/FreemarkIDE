@@ -1,4 +1,4 @@
-package org.qxp.ctrl.mybatis;
+package org.qxp.ctrl.mybatis.xml;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.qxp.ctrl.mybatis.po.Update;
+import org.qxp.ctrl.mybatis.xml.po.Insert;
 import org.qxp.ctrl.util.Log;
 
 import freemarker.core.Environment;
@@ -17,11 +17,11 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
-public class UpdateDirective implements TemplateDirectiveModel{
+public class InsertDirective implements TemplateDirectiveModel{
 	
-	private List<Update> list;
+	private List<Insert> list;
 	
-	public UpdateDirective(List<Update> list){
+	public InsertDirective(List<Insert> list){
 		this.list = list;
 	}
 	
@@ -31,33 +31,33 @@ public class UpdateDirective implements TemplateDirectiveModel{
 		if(null == body){
 			throw new TemplateModelException("body null");
 		}else{
-			list = formatUpdateModel(list);
-			env.setVariable("updateList", ObjectWrapper.DEFAULT_WRAPPER.wrap(list));
+			list = formatInsertModel(list);
+			env.setVariable("insertList", ObjectWrapper.DEFAULT_WRAPPER.wrap(list));
 			body.render(env.getOut());
 		}
 	}
 	
-	private List<Update> formatUpdateModel(List<Update> list){
-		 Iterator<Update> iter = list.iterator();  
+	private List<Insert> formatInsertModel(List<Insert> list){
+		 Iterator<Insert> iter = list.iterator();  
 		 while(iter.hasNext()){  
-			 Update u = iter.next();
-			 String id = u.getId();
-			 String sql = u.getSql();
+			 Insert i = iter.next();
+			 String id = i.getId();
+			 String sql = i.getSql();
 			 if(null == id || null == sql){
-				logger.warn("UpdateModel Must include id,sql");
+				logger.warn("InsertModel Must include id,sql");
 				 iter.remove();  
 			 }
 		 }
 		 return list;
 	} 
 
-	public List<Update> getList() {
+	public List<Insert> getList() {
 		return list;
 	}
 
-	public void setList(List<Update> list) {
+	public void setList(List<Insert> list) {
 		this.list = list;
 	}
 
-	private static final Logger logger= Log.getLogger(UpdateDirective.class);
+	private static final Logger logger= Log.getLogger(InsertDirective.class);
 }

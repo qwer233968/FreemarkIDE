@@ -1,4 +1,4 @@
-package org.qxp.ctrl.mybatis.po;
+package org.qxp.ctrl.mybatis.xml.po;
 
 public class Select {
 

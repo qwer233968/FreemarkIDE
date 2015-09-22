@@ -1,4 +1,4 @@
-package org.qxp.ctrl.mybatis;
+package org.qxp.ctrl.mybatis.xml;
 
 import java.io.IOException;
 import java.util.Map;

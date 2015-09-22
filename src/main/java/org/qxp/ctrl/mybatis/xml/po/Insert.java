@@ -1,12 +1,13 @@
-package org.qxp.ctrl.mybatis.po;
+package org.qxp.ctrl.mybatis.xml.po;
 
-public class Update {
+public class Insert {
 
 	private String id;
 	private String flushCache;
 	private String parameterType;
 	private String sql;
 	private String statementType;
+	
 	public String getId() {
 		return id;
 	}

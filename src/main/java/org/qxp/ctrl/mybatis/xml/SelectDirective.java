@@ -1,4 +1,4 @@
-package org.qxp.ctrl.mybatis;
+package org.qxp.ctrl.mybatis.xml;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.qxp.ctrl.mybatis.po.Select;
+import org.qxp.ctrl.mybatis.xml.po.Select;
 import org.qxp.ctrl.util.Log;
 
 import freemarker.core.Environment;
