@@ -2,11 +2,15 @@
 ${file.packageName}
 <#list file.importList as import>
 ${import.toString()}
-<#list>
+</#list>
+
+
+public interface ${file.interfaceName} {
+
+	<#list file.interfaceList as interface>
+	public ${interface.resultType} ${interface.name}(<#list interface.params as param>${param.toString()}<#if param_has_next>,</#if></#list>);
+	
+	</#list>
+	
 </@dao>
-
-
-<@daoInterface>
-</@daoInterface>
-
 }

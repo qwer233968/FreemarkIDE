@@ -1,8 +1,10 @@
 package org.qxp.ctrl.test;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +13,11 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.qxp.ctrl.mybatis.dao.DaoDirective;
+import org.qxp.ctrl.mybatis.dao.po.DaoFile;
+import org.qxp.ctrl.mybatis.dao.po.Import;
+import org.qxp.ctrl.mybatis.dao.po.Interface;
+import org.qxp.ctrl.mybatis.dao.po.Param;
 import org.qxp.ctrl.mybatis.xml.InsertDirective;
 import org.qxp.ctrl.mybatis.xml.MapperDirective;
 import org.qxp.ctrl.mybatis.xml.SelectDirective;
@@ -26,8 +33,8 @@ import freemarker.template.TemplateException;
 public class MybatisTest {
 
 	String RELATIVE_PATH = System.getProperty("user.dir"); 
-	@Test
-	public void selectTest() throws IOException, TemplateException {
+	
+	public void xmlTest() throws IOException, TemplateException {
 		Writer writer = new OutputStreamWriter(
 				new FileOutputStream(RELATIVE_PATH + "/src/test/resources/output/mybatis/mybatis.xml"),
 				"UTF-8");
@@ -42,6 +49,21 @@ public class MybatisTest {
 		paramMap.put("mybatisInsert", new InsertDirective(list2));
 		paramMap.put("mybatisUpdate", new UpdateDirective(list3));
 		CommUtil.processTemplate(RELATIVE_PATH + "/src/main/resources/template/mybatis", "mybatis.xml",
+				"utf-8", paramMap, writer);
+		logger.debug("恭喜，生成成功~~");
+	}
+	
+	@Test
+	public void daoTest() throws UnsupportedEncodingException, FileNotFoundException{
+		Writer writer = new OutputStreamWriter(
+				new FileOutputStream(RELATIVE_PATH + "/src/test/resources/output/mybatis/UserDao.java"),
+				"UTF-8");
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		DaoFile file = createDaoFile();
+		// 自定义标签解析
+		paramMap.put("dao", new DaoDirective(file));
+		CommUtil.processTemplate(RELATIVE_PATH + "/src/main/resources/template/mybatis", "mybatis.dao",
 				"utf-8", paramMap, writer);
 		logger.debug("恭喜，生成成功~~");
 	}
@@ -107,6 +129,49 @@ public class MybatisTest {
 		list.add(u2);
 		list.add(u3);
 		return list;
+	}
+	
+	public DaoFile createDaoFile(){
+		DaoFile file = new DaoFile();
+		List<Interface> interfaceList =new ArrayList<Interface>();
+		Interface if1 = new Interface();
+		if1.setName("findUser");
+		if1.setResultType("User");
+		List<Param> pl1 = new ArrayList<Param>(); 
+		Param p1 = new Param();
+		p1.setName("id");
+		p1.setType("Long");
+		pl1.add(p1);
+		if1.setParams(pl1);
+		Interface if2 = new Interface();
+		if2.setName("addUser");
+		if2.setResultType("Integer");
+		List<Param> pl2 = new ArrayList<Param>(); 
+		Param p2 = new Param();
+		p2.setName("username");
+		p2.setType("String");
+		pl2.add(p2);
+		Param p3 = new Param();
+		p3.setName("password");
+		p3.setType("String");
+		pl2.add(p3);
+		if2.setParams(pl2);
+		interfaceList.add(if1);
+		interfaceList.add(if2);
+		
+		List<Import> importList = new ArrayList<Import>();
+		Import i1 = new Import();
+		i1.setName("org.apache.ibatis.annotations.Param");
+		Import i2 = new Import();
+		i2.setName("cn.apex.stepapp.po.User");
+		importList.add(i1);
+		importList.add(i2);
+		
+		file.setPackageName("");
+		file.setInterfaceName("UserDao");
+		file.setInterfaceList(interfaceList);
+		file.setImportList(importList);
+		return file;
 	}
 	
 	private static final Logger logger= Log.getLogger(MybatisTest.class);
