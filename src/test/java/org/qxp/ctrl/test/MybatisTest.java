@@ -41,7 +41,7 @@ public class MybatisTest {
 		paramMap.put("mybatisSelect", new SelectDirective(list1));
 		paramMap.put("mybatisInsert", new InsertDirective(list2));
 		paramMap.put("mybatisUpdate", new UpdateDirective(list3));
-		CommUtil.processTemplate(RELATIVE_PATH + "/src/test/resources/template/mybatis", "mybatis.xml",
+		CommUtil.processTemplate(RELATIVE_PATH + "/src/main/resources/template/mybatis", "mybatis.xml",
 				"utf-8", paramMap, writer);
 		logger.debug("恭喜，生成成功~~");
 	}

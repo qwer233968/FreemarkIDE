@@ -1,0 +1,12 @@
+<@dao>
+${file.packageName}
+<#list file.importList as import>
+${import.toString()}
+<#list>
+</@dao>
+
+
+<@daoInterface>
+</@daoInterface>
+
+}
