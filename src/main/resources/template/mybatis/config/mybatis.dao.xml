@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dom>
+<@dao>
+	<package-name>${file.packageName}</package-name>
+	<import-list>
+		<#list file.importList as import>
+		<import>${import.name}</import>
+		</#list>
+	</import-list>
+	
+	<interface-name>${file.interfaceName}</interface-name>
+	<interface-list>
+	<#list file.interfaceList as interface>
+		<interface result-type="${interface.resultType}" name="${interface.name}" >
+			<params>
+				<#list interface.params as param>
+				<param name="${param.name}" type="${param.type}"></param>
+				</#list>
+			</params>
+		</interface>
+	</#list>
+	</interface-list>
+
+</@dao>
+</dom>

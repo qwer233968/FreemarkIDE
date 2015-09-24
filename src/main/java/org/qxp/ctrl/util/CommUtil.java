@@ -1,7 +1,9 @@
 package org.qxp.ctrl.util;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Map;
 
@@ -46,7 +48,7 @@ public class CommUtil {
      * @param out 输出流 
      */  
     @SuppressWarnings("deprecation")
-	public static void processTemplate(String templatePath, String templateName, String templateEncoding, Map<?,?> root, Writer out){  
+	public static void processTemplate(String templatePath, String templateName, String templateEncoding, Map<?,?> root, String outputPath, String outputFile){  
         try {  
             Configuration config=new Configuration();  
             File file=new File(templatePath);  
@@ -58,9 +60,11 @@ public class CommUtil {
             //获取模板,并设置编码方式，这个编码必须要与页面中的编码格式一致  
             Template template=config.getTemplate(templateName,templateEncoding);  
             //合并数据模型与模板  
-            template.process(root, out);  
-            out.flush();  
-            out.close();  
+            Writer writer = new OutputStreamWriter(
+    				new FileOutputStream(outputPath + "/" + outputFile),"UTF-8");
+            template.process(root, writer);  
+            writer.flush();  
+            writer.close();  
         } catch (IOException e) {  
             e.printStackTrace();  
         }catch (TemplateException e) {  

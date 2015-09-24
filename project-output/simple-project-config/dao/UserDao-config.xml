@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dom>
+	<package-name></package-name>
+	<import-list>
+		<import>org.apache.ibatis.annotations.Param</import>
+		<import>cn.apex.stepapp.po.User</import>
+	</import-list>
+	
+	<interface-name>UserDao</interface-name>
+	<interface-list>
+		<interface result-type="User" name="findUser" >
+			<params>
+				<param name="id" type="Long"></param>
+			</params>
+		</interface>
+		<interface result-type="Integer" name="addUser" >
+			<params>
+				<param name="username" type="String"></param>
+				<param name="password" type="String"></param>
+			</params>
+		</interface>
+	</interface-list>
+
+</dom>
