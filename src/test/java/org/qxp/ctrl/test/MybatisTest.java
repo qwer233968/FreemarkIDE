@@ -16,11 +16,9 @@ import org.qxp.ctrl.mybatis.dao.po.DaoFile;
 import org.qxp.ctrl.mybatis.dao.po.Import;
 import org.qxp.ctrl.mybatis.dao.po.Interface;
 import org.qxp.ctrl.mybatis.dao.po.Param;
-import org.qxp.ctrl.mybatis.xml.InsertDirective;
 import org.qxp.ctrl.mybatis.xml.MapperDirective;
-import org.qxp.ctrl.mybatis.xml.SelectDirective;
-import org.qxp.ctrl.mybatis.xml.UpdateDirective;
 import org.qxp.ctrl.mybatis.xml.po.Insert;
+import org.qxp.ctrl.mybatis.xml.po.Mapper;
 import org.qxp.ctrl.mybatis.xml.po.Select;
 import org.qxp.ctrl.mybatis.xml.po.Update;
 import org.qxp.ctrl.util.CommUtil;
@@ -40,14 +38,16 @@ public class MybatisTest {
 		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		
-		List<Select> list1 = createSelectList();
-		List<Insert> list2 = createInsertList();
-		List<Update> list3 = createUpdateList();
+		List<Select> selectList = createSelectList();
+		List<Insert> insertList = createInsertList();
+		List<Update> updateList = createUpdateList();
+		Mapper mapper = new Mapper();
+		mapper.setNamespace("org.qxp.mapper");
+		mapper.setInsertList(insertList);
+		mapper.setSelectList(selectList);
+		mapper.setUpdateList(updateList);
 		// 自定义标签解析
-		paramMap.put("mapper", new MapperDirective());
-		paramMap.put("mybatisSelect", new SelectDirective(list1));
-		paramMap.put("mybatisInsert", new InsertDirective(list2));
-		paramMap.put("mybatisUpdate", new UpdateDirective(list3));
+		paramMap.put("mapper", new MapperDirective(mapper));
 		CommUtil.processTemplate(readPath, readFile,
 				charset, paramMap, outputPath, outputFile);
 		logger.debug("mybatisXmlConfigTest恭喜，生成成功~~");
@@ -65,14 +65,16 @@ public class MybatisTest {
 		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		
-		List<Select> list1 = createSelectList();
-		List<Insert> list2 = createInsertList();
-		List<Update> list3 = createUpdateList();
+		List<Select> selectList = createSelectList();
+		List<Insert> insertList = createInsertList();
+		List<Update> updateList = createUpdateList();
+		Mapper mapper = new Mapper();
+		mapper.setNamespace("org.qxp.mapper");
+		mapper.setInsertList(insertList);
+		mapper.setSelectList(selectList);
+		mapper.setUpdateList(updateList);
 		// 自定义标签解析
-		paramMap.put("mapper", new MapperDirective());
-		paramMap.put("mybatisSelect", new SelectDirective(list1));
-		paramMap.put("mybatisInsert", new InsertDirective(list2));
-		paramMap.put("mybatisUpdate", new UpdateDirective(list3));
+		paramMap.put("mapper", new MapperDirective(mapper));
 		CommUtil.processTemplate(readPath, readFile,
 				charset, paramMap, outputPath, outputFile);
 		logger.debug("mybatisXmlTest恭喜，生成成功~~");

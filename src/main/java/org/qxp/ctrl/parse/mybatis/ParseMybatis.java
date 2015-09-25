@@ -1,39 +1,71 @@
 package org.qxp.ctrl.parse.mybatis;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.qxp.ctrl.mybatis.xml.po.Insert;
+import org.qxp.ctrl.mybatis.xml.po.Mapper;
+import org.qxp.ctrl.mybatis.xml.po.Select;
+import org.qxp.ctrl.mybatis.xml.po.Update;
 import org.qxp.ctrl.parse.DomParse;
 
 public class ParseMybatis implements DomParse{
 
-	public Object parseXML(String fileName) throws DocumentException {
+	@SuppressWarnings("unchecked")
+	public Mapper parseXML(String fileName) throws DocumentException {
 		SAXReader reader = new SAXReader();
 		Document doc = reader.read(fileName);
 		Element root = doc.getRootElement();
-		Element dom = root.element("dom");
-		Element packageName = dom.element("package-name");
-		Element interfaceName = dom.element("interface-name");
-		List<Element> importList = dom.elements("import-list");
-		List<Element> interfaceList = dom.elements("interface-list");
+		Element dom_mapper = root.element("mapper");
 		
+		Mapper mapper = new Mapper();
 		
-		for (Element imports : importList) {
-			imports.getText();
+		String namespace = dom_mapper.attributeValue("namespace");
+		List<Element> dom_selects = dom_mapper.elements("select");
+		List<Element> dom_inserts = dom_mapper.elements("insert");
+		List<Element> dom_updates = dom_mapper.elements("update");
+		List<Select> selectList = new ArrayList<Select>();
+		for (Element select : dom_selects) {
+			Select s = new Select();
+			s.setFlushCache(select.attributeValue("flushCache"));
+			s.setId(select.attributeValue("id"));
+			s.setParameterType(select.attributeValue("parameterType"));
+			s.setResultMap(select.attributeValue("resultMap"));
+			s.setResultType(select.attributeValue("resultType"));
+			s.setSql(select.getText());
+			s.setStatementType(select.attributeValue("statementType"));
+			selectList.add(s);
 		}
-		for (Element interfaces : interfaceList) {
-			interfaces.attributeValue("name");
-			interfaces.attributeValue("result-type");
-			List<Element> paramList= interfaces.elements("params");
-			for (Element param : paramList) {
-				param.attributeValue("name");
-				param.attributeValue("type");
-			}
+		List<Insert> insertList = new ArrayList<Insert>();
+		for (Element insert : dom_inserts) {
+			Insert i = new Insert();
+			i.setFlushCache(insert.attributeValue("flushCache"));
+			i.setId(insert.attributeValue("id"));
+			i.setParameterType(insert.attributeValue("parameterType"));
+			i.setSql(insert.getText());
+			i.setStatementType(insert.attributeValue("statementType"));
+			insertList.add(i);
 		}
-		return null;
+		List<Update> updateList = new ArrayList<Update>();
+		for (Element update : dom_updates) {
+			Update u = new Update();
+			u.setFlushCache(update.attributeValue("flushCache"));
+			u.setId(update.attributeValue("id"));
+			u.setParameterType(update.attributeValue("parameterType"));
+			u.setSql(update.getText());
+			u.setStatementType(update.attributeValue("statementType"));
+			updateList.add(u);
+		}
+		
+		mapper.setNamespace(namespace);
+		mapper.setInsertList(insertList);
+		mapper.setSelectList(selectList);
+		mapper.setUpdateList(updateList);
+		return mapper;
 	}
 
 }

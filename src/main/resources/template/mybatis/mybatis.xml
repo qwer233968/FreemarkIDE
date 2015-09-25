@@ -2,28 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <@mapper>
 <mapper namespace="${namespace}">
-</@mapper>
-	<@mybatisSelect>
+
 		<#list selectList as sl>
 			<select ${sl.toString()} <#if sl.resultType?exists>resultType="${sl.resultType}"</#if> <#if sl.flushCache?exists>flushCache="${sl.flushCache}"</#if> <#if sl.resultMap?exists>resultMap="${sl.resultMap}"</#if> <#if sl.parameterType?exists>parameterType="${sl.parameterType}"</#if><#if sl.statementType?exists>statementType="${sl.statementType}"</#if> >
     				${sl.sql}
     			</select>
 		</#list>
-	</@mybatisSelect>
-     	
-     <@mybatisInsert>
+
 		<#list insertList as il>
 			<insert ${il.toString()} <#if il.flushCache?exists>flushCache="${il.flushCache}"</#if> <#if il.parameterType?exists>parameterType="${il.parameterType}"</#if><#if il.statementType?exists>statementType="${il.statementType}"</#if> >
     				${il.sql}
     		</insert>
 		</#list>
-	</@mybatisInsert>
-	
-	<@mybatisUpdate>
+
 		<#list updateList as ul>
 			<update ${ul.toString()} <#if ul.flushCache?exists>flushCache="${ul.flushCache}"</#if> <#if ul.parameterType?exists>parameterType="${ul.parameterType}"</#if><#if ul.statementType?exists>statementType="${ul.statementType}"</#if> >
     				${ul.sql}
     		</update>
 		</#list>
-	</@mybatisUpdate>
+
 </mapper>
+</@mapper>
