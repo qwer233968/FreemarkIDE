@@ -4,116 +4,50 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.qxp.ctrl.config.SystemConfig;
-import org.qxp.ctrl.mybatis.dao.DaoDirective;
+import org.qxp.ctrl.io.mybatis.WriterDao;
+import org.qxp.ctrl.io.mybatis.WriterMapper;
 import org.qxp.ctrl.mybatis.dao.po.DaoFile;
 import org.qxp.ctrl.mybatis.dao.po.Import;
 import org.qxp.ctrl.mybatis.dao.po.Interface;
 import org.qxp.ctrl.mybatis.dao.po.Param;
-import org.qxp.ctrl.mybatis.xml.MapperDirective;
 import org.qxp.ctrl.mybatis.xml.po.Insert;
 import org.qxp.ctrl.mybatis.xml.po.Mapper;
 import org.qxp.ctrl.mybatis.xml.po.Select;
 import org.qxp.ctrl.mybatis.xml.po.Update;
-import org.qxp.ctrl.util.CommUtil;
-import org.qxp.ctrl.util.Log;
 
 import freemarker.template.TemplateException;
 
 public class MybatisTest {
 	
-	public void mybatisXmlConfigTest(){
-		String readPath = SystemConfig.RELATIVE_PATH + "/src/main/resources/template/mybatis";
-		String readFile = "mybatis.xml";
-		String outputPath = SystemConfig.PROJECT_CONFIG_OUTPUT + "/" + SystemConfig.PROJECT_CONFIG_OUTPUT_NAME + "/" + SystemConfig.MYBATIS_PACKAGE_NAME;
-		String outputFile = "UserMapper-config.xml";
-		String charset = "utf-8";
-		logger.debug(outputPath);
-		
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		
-		List<Select> selectList = createSelectList();
-		List<Insert> insertList = createInsertList();
-		List<Update> updateList = createUpdateList();
-		Mapper mapper = new Mapper();
-		mapper.setNamespace("org.qxp.mapper");
-		mapper.setInsertList(insertList);
-		mapper.setSelectList(selectList);
-		mapper.setUpdateList(updateList);
-		// 自定义标签解析
-		paramMap.put("mapper", new MapperDirective(mapper));
-		CommUtil.processTemplate(readPath, readFile,
-				charset, paramMap, outputPath, outputFile);
-		logger.debug("mybatisXmlConfigTest恭喜，生成成功~~");
-	}
-	
 	@Test
 	public void mybatisXmlTest() throws IOException, TemplateException {
-		mybatisXmlConfigTest();
-		String readPath = SystemConfig.RELATIVE_PATH + "/src/main/resources/template/mybatis";
-		String readFile = "mybatis.xml";
-		String outputPath = SystemConfig.PROJECT_OUTPUT + "/" + SystemConfig.MYBATIS_PACKAGE_NAME;
-		String outputFile = "UserMapper.xml";
-		String charset = "utf-8";
-		logger.debug(outputPath);
-		
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		
-		List<Select> selectList = createSelectList();
-		List<Insert> insertList = createInsertList();
-		List<Update> updateList = createUpdateList();
-		Mapper mapper = new Mapper();
-		mapper.setNamespace("org.qxp.mapper");
-		mapper.setInsertList(insertList);
-		mapper.setSelectList(selectList);
-		mapper.setUpdateList(updateList);
-		// 自定义标签解析
-		paramMap.put("mapper", new MapperDirective(mapper));
-		CommUtil.processTemplate(readPath, readFile,
-				charset, paramMap, outputPath, outputFile);
-		logger.debug("mybatisXmlTest恭喜，生成成功~~");
-	}
-	
-	public void mybatisDaoConfigTest() throws UnsupportedEncodingException, FileNotFoundException{
-		String readPath = SystemConfig.RELATIVE_PATH + "/src/main/resources/template/mybatis/config";
-		String readFile = "mybatis.dao.xml";
-		String outputPath = SystemConfig.PROJECT_CONFIG_OUTPUT + "/" + SystemConfig.PROJECT_CONFIG_OUTPUT_NAME + "/" + SystemConfig.DAO_PACKAGE_NAME;
-		String outputFile = "UserDao-config.xml";
-		String charset = "utf-8";
-		logger.debug(outputPath);
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		
-		DaoFile file = createDaoFile();
-		// 自定义标签解析
-		paramMap.put("dao", new DaoDirective(file));
-		CommUtil.processTemplate(readPath, readFile,
-				charset, paramMap, outputPath, outputFile);
-		logger.debug("mybatisDaoConfigTest恭喜，生成成功~~");
+		Mapper mapper = createMapper();
+		WriterMapper wm = new WriterMapper();
+		wm.writerTemplate(mapper);
+		wm.writerConfig(mapper);
 	}
 	
 	@Test
 	public void mybatisDaoTest() throws UnsupportedEncodingException, FileNotFoundException{
-		mybatisDaoConfigTest();
-		String readPath = SystemConfig.RELATIVE_PATH + "/src/main/resources/template/mybatis";
-		String readFile = "mybatis.dao";
-		String outputPath = SystemConfig.PROJECT_OUTPUT + "/" + SystemConfig.DAO_PACKAGE_NAME;
-		String outputFile = "UserDao.java";
-		String charset = "utf-8";
-		logger.debug(outputPath);
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		
 		DaoFile file = createDaoFile();
-		// 自定义标签解析
-		paramMap.put("dao", new DaoDirective(file));
-		CommUtil.processTemplate(readPath, readFile,
-				charset, paramMap, outputPath, outputFile);
-		logger.debug("mybatisDaoTest恭喜，生成成功~~");
+		WriterDao wd = new WriterDao();
+		wd.writerTemplate(file);
+		wd.writerConfig(file);
+	}
+	
+	public Mapper createMapper(){
+		List<Select> selectList = createSelectList();
+		List<Insert> insertList = createInsertList();
+		List<Update> updateList = createUpdateList();
+		Mapper mapper = new Mapper();
+		mapper.setNamespace("org.qxp.mapper");
+		mapper.setInsertList(insertList);
+		mapper.setSelectList(selectList);
+		mapper.setUpdateList(updateList);
+		return mapper;
 	}
 	
 	public List<Select> createSelectList(){
@@ -222,5 +156,5 @@ public class MybatisTest {
 		return file;
 	}
 	
-	private static final Logger logger= Log.getLogger(MybatisTest.class);
+	//private static final Logger logger= Log.getLogger(MybatisTest.class);
 }

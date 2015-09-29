@@ -6,27 +6,26 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.qxp.ctrl.config.SystemConfig;
 import org.qxp.ctrl.io.BasicWriter;
-import org.qxp.ctrl.mybatis.xml.MapperDirective;
-import org.qxp.ctrl.mybatis.xml.po.Mapper;
+import org.qxp.ctrl.mybatis.dao.DaoDirective;
+import org.qxp.ctrl.mybatis.dao.po.DaoFile;
 import org.qxp.ctrl.util.CommUtil;
 import org.qxp.ctrl.util.Log;
 
-public class WriterMapper implements BasicWriter{
+public class WriterDao implements BasicWriter{
 
 	public boolean writerTemplate(Object o) {
 		try{
 			String readPath = SystemConfig.RELATIVE_PATH + "/src/main/resources/template/mybatis";
-			String readFile = "mapper.xml";
-			String outputPath = SystemConfig.PROJECT_OUTPUT + "/" + SystemConfig.MYBATIS_PACKAGE_NAME;
-			String outputFile = "UserMapper.xml";
+			String readFile = "mybatis.dao";
+			String outputPath = SystemConfig.PROJECT_OUTPUT + "/" + SystemConfig.DAO_PACKAGE_NAME;
+			String outputFile = "UserDao.java";
 			String charset = "utf-8";
 			logger.debug(outputPath);
-			
 			Map<String, Object> paramMap = new HashMap<String, Object>();
-			paramMap.put("mapper", new MapperDirective((Mapper) o));
+			paramMap.put("dao", new DaoDirective((DaoFile) o));
 			CommUtil.processTemplate(readPath, readFile,
 					charset, paramMap, outputPath, outputFile);
-			logger.debug("mybatisXmlTest恭喜，生成成功~~");
+			logger.debug("mybatisDaoTest恭喜，生成成功~~");
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -36,26 +35,24 @@ public class WriterMapper implements BasicWriter{
 
 	public boolean writerConfig(Object o) {
 		try{
-			String readPath = SystemConfig.RELATIVE_PATH + "/src/main/resources/template/mybatis";
-			String readFile = "mapper.xml";
-			String outputPath = SystemConfig.PROJECT_CONFIG_OUTPUT + "/" + SystemConfig.PROJECT_CONFIG_OUTPUT_NAME + "/" + SystemConfig.MYBATIS_PACKAGE_NAME;
-			String outputFile = "UserMapper-config.xml";
+			String readPath = SystemConfig.RELATIVE_PATH + "/src/main/resources/template/mybatis/config";
+			String readFile = "mybatis.dao.xml";
+			String outputPath = SystemConfig.PROJECT_CONFIG_OUTPUT + "/" + SystemConfig.PROJECT_CONFIG_OUTPUT_NAME + "/" + SystemConfig.DAO_PACKAGE_NAME;
+			String outputFile = "UserDao-config.xml";
 			String charset = "utf-8";
 			logger.debug(outputPath);
-			
 			Map<String, Object> paramMap = new HashMap<String, Object>();
-			paramMap.put("mapper", new MapperDirective((Mapper) o));
+			paramMap.put("dao", new DaoDirective((DaoFile) o));
 			CommUtil.processTemplate(readPath, readFile,
 					charset, paramMap, outputPath, outputFile);
-			logger.debug("mybatisXmlConfigTest恭喜，生成成功~~");
+			logger.debug("mybatisDaoConfigTest恭喜，生成成功~~");
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();
 			return false;
 		}
-		
 	}
-
-	private static final Logger logger= Log.getLogger(WriterMapper.class);
+	
+	private static final Logger logger= Log.getLogger(WriterDao.class);
 
 }
