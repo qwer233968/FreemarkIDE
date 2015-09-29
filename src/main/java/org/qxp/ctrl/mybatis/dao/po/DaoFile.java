@@ -4,6 +4,8 @@ import java.util.List;
 
 public class DaoFile {
 
+	private String fileName;
+	private String suffix;
 	private String packageName;
 	private String interfaceName;
 	private List<Import> importList;
@@ -32,6 +34,18 @@ public class DaoFile {
 	}
 	public void setInterfaceList(List<Interface> interfaceList) {
 		this.interfaceList = interfaceList;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public String getSuffix() {
+		return suffix;
+	}
+	public void setSuffix(String suffix) {
+		this.suffix = suffix;
 	}
 	
 }

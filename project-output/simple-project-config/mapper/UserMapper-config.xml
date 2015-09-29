@@ -1,35 +1,59 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.qxp.mapper">
-
-			<select id="findUser1"  resultType="java.lang.Integer1" flushCache="true1"   >
-    				select * from tb_user1
-    			</select>
-			<select id="findUser2"  resultType="java.lang.Integer2" flushCache="true2"   >
-    				select * from tb_user2
-    			</select>
-			<select id="findUser3"  resultType="java.lang.Integer3" flushCache="true3"   >
-    				select * from tb_user3
-    			</select>
-
-			<insert id="addUser1" flushCache="true1"  >
-    				insert into user(1)
-    		</insert>
-			<insert id="addUser2" flushCache="true2"  >
-    				insert into user(2)
-    		</insert>
-			<insert id="addUser3" flushCache="true3"  >
-    				insert into user(3)
-    		</insert>
-
-			<update id="addUser1" flushCache="true1"  >
-    				insert into user(1)
-    		</update>
-			<update id="addUser2" flushCache="true2"  >
-    				insert into user(2)
-    		</update>
-			<update id="addUser3" flushCache="true3"  >
-    				insert into user(3)
-    		</update>
-
-</mapper>
+<Mapper>
+  <fileName>UserMapper</fileName>
+  <suffix>xml</suffix>
+  <namespace>org.qxp.mapper</namespace>
+  <insertList>
+    <org.qxp.ctrl.mybatis.xml.po.Insert>
+      <id>addUser1</id>
+      <flushCache>true1</flushCache>
+      <sql>insert into user(1)</sql>
+    </org.qxp.ctrl.mybatis.xml.po.Insert>
+    <org.qxp.ctrl.mybatis.xml.po.Insert>
+      <id>addUser2</id>
+      <flushCache>true2</flushCache>
+      <sql>insert into user(2)</sql>
+    </org.qxp.ctrl.mybatis.xml.po.Insert>
+    <org.qxp.ctrl.mybatis.xml.po.Insert>
+      <id>addUser3</id>
+      <flushCache>true3</flushCache>
+      <sql>insert into user(3)</sql>
+    </org.qxp.ctrl.mybatis.xml.po.Insert>
+  </insertList>
+  <updateList>
+    <org.qxp.ctrl.mybatis.xml.po.Update>
+      <id>addUser1</id>
+      <flushCache>true1</flushCache>
+      <sql>insert into user(1)</sql>
+    </org.qxp.ctrl.mybatis.xml.po.Update>
+    <org.qxp.ctrl.mybatis.xml.po.Update>
+      <id>addUser2</id>
+      <flushCache>true2</flushCache>
+      <sql>insert into user(2)</sql>
+    </org.qxp.ctrl.mybatis.xml.po.Update>
+    <org.qxp.ctrl.mybatis.xml.po.Update>
+      <id>addUser3</id>
+      <flushCache>true3</flushCache>
+      <sql>insert into user(3)</sql>
+    </org.qxp.ctrl.mybatis.xml.po.Update>
+  </updateList>
+  <selectList>
+    <org.qxp.ctrl.mybatis.xml.po.Select>
+      <id>findUser1</id>
+      <resultType>java.lang.Integer1</resultType>
+      <flushCache>true1</flushCache>
+      <sql>select * from tb_user1</sql>
+    </org.qxp.ctrl.mybatis.xml.po.Select>
+    <org.qxp.ctrl.mybatis.xml.po.Select>
+      <id>findUser2</id>
+      <resultType>java.lang.Integer2</resultType>
+      <flushCache>true2</flushCache>
+      <sql>select * from tb_user2</sql>
+    </org.qxp.ctrl.mybatis.xml.po.Select>
+    <org.qxp.ctrl.mybatis.xml.po.Select>
+      <id>findUser3</id>
+      <resultType>java.lang.Integer3</resultType>
+      <flushCache>true3</flushCache>
+      <sql>select * from tb_user3</sql>
+    </org.qxp.ctrl.mybatis.xml.po.Select>
+  </selectList>
+</Mapper>

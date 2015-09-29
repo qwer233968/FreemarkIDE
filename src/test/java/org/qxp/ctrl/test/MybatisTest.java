@@ -24,7 +24,7 @@ public class MybatisTest {
 	
 	@Test
 	public void mybatisXmlTest() throws IOException, TemplateException {
-		Mapper mapper = createMapper();
+		List<Mapper> mapper = createMapper();
 		WriterMapper wm = new WriterMapper();
 		wm.writerTemplate(mapper);
 		wm.writerConfig(mapper);
@@ -32,13 +32,16 @@ public class MybatisTest {
 	
 	@Test
 	public void mybatisDaoTest() throws UnsupportedEncodingException, FileNotFoundException{
-		DaoFile file = createDaoFile();
+		List<DaoFile> list = createDaoFile();
 		WriterDao wd = new WriterDao();
-		wd.writerTemplate(file);
-		wd.writerConfig(file);
+		wd.writerTemplate(list);
+		wd.writerConfig(list);
 	}
 	
-	public Mapper createMapper(){
+	public List<Mapper> createMapper(){
+		String fileName = "UserMapper";
+		String suffix = "xml";
+		List<Mapper> list = new ArrayList<Mapper>();
 		List<Select> selectList = createSelectList();
 		List<Insert> insertList = createInsertList();
 		List<Update> updateList = createUpdateList();
@@ -47,7 +50,10 @@ public class MybatisTest {
 		mapper.setInsertList(insertList);
 		mapper.setSelectList(selectList);
 		mapper.setUpdateList(updateList);
-		return mapper;
+		mapper.setFileName(fileName);
+		mapper.setSuffix(suffix);
+		list.add(mapper);
+		return list;
 	}
 	
 	public List<Select> createSelectList(){
@@ -113,7 +119,9 @@ public class MybatisTest {
 		return list;
 	}
 	
-	public DaoFile createDaoFile(){
+	public List<DaoFile> createDaoFile(){
+		String fileName = "UserDao";
+		String suffix = "java";
 		DaoFile file = new DaoFile();
 		List<Interface> interfaceList =new ArrayList<Interface>();
 		Interface if1 = new Interface();
@@ -153,7 +161,11 @@ public class MybatisTest {
 		file.setInterfaceName("UserDao");
 		file.setInterfaceList(interfaceList);
 		file.setImportList(importList);
-		return file;
+		file.setFileName(fileName);
+		file.setSuffix(suffix);
+		List<DaoFile> list = new ArrayList<DaoFile>();
+		list.add(file);
+		return list;
 	}
 	
 	//private static final Logger logger= Log.getLogger(MybatisTest.class);

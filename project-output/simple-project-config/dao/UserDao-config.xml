@@ -1,24 +1,40 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<dom>
-	<package-name></package-name>
-	<import-list>
-		<import>org.apache.ibatis.annotations.Param</import>
-		<import>cn.apex.stepapp.po.User</import>
-	</import-list>
-	
-	<interface-name>UserDao</interface-name>
-	<interface-list>
-		<interface result-type="User" name="findUser" >
-			<params>
-				<param name="id" type="Long"></param>
-			</params>
-		</interface>
-		<interface result-type="Integer" name="addUser" >
-			<params>
-				<param name="username" type="String"></param>
-				<param name="password" type="String"></param>
-			</params>
-		</interface>
-	</interface-list>
-
-</dom>
+<org.qxp.ctrl.mybatis.dao.po.DaoFile>
+  <fileName>UserDao</fileName>
+  <suffix>java</suffix>
+  <packageName></packageName>
+  <interfaceName>UserDao</interfaceName>
+  <importList>
+    <org.qxp.ctrl.mybatis.dao.po.Import>
+      <name>org.apache.ibatis.annotations.Param</name>
+    </org.qxp.ctrl.mybatis.dao.po.Import>
+    <org.qxp.ctrl.mybatis.dao.po.Import>
+      <name>cn.apex.stepapp.po.User</name>
+    </org.qxp.ctrl.mybatis.dao.po.Import>
+  </importList>
+  <interfaceList>
+    <org.qxp.ctrl.mybatis.dao.po.Interface>
+      <name>findUser</name>
+      <resultType>User</resultType>
+      <params>
+        <org.qxp.ctrl.mybatis.dao.po.Param>
+          <name>id</name>
+          <type>Long</type>
+        </org.qxp.ctrl.mybatis.dao.po.Param>
+      </params>
+    </org.qxp.ctrl.mybatis.dao.po.Interface>
+    <org.qxp.ctrl.mybatis.dao.po.Interface>
+      <name>addUser</name>
+      <resultType>Integer</resultType>
+      <params>
+        <org.qxp.ctrl.mybatis.dao.po.Param>
+          <name>username</name>
+          <type>String</type>
+        </org.qxp.ctrl.mybatis.dao.po.Param>
+        <org.qxp.ctrl.mybatis.dao.po.Param>
+          <name>password</name>
+          <type>String</type>
+        </org.qxp.ctrl.mybatis.dao.po.Param>
+      </params>
+    </org.qxp.ctrl.mybatis.dao.po.Interface>
+  </interfaceList>
+</org.qxp.ctrl.mybatis.dao.po.DaoFile>

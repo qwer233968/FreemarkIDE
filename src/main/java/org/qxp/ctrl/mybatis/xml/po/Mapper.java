@@ -4,6 +4,10 @@ import java.util.List;
 
 public class Mapper {
 
+	private String fileName;
+	
+	private String suffix;
+	
 	private String namespace;
 	
 	private List<Insert> insertList;
@@ -42,6 +46,22 @@ public class Mapper {
 
 	public void setSelectList(List<Select> selectList) {
 		this.selectList = selectList;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getSuffix() {
+		return suffix;
+	}
+
+	public void setSuffix(String suffix) {
+		this.suffix = suffix;
 	}
 
 	
