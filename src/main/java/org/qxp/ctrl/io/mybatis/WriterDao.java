@@ -13,7 +13,6 @@ import org.qxp.ctrl.config.SystemConfig;
 import org.qxp.ctrl.io.BasicWriter;
 import org.qxp.ctrl.mybatis.dao.DaoDirective;
 import org.qxp.ctrl.mybatis.dao.po.DaoFile;
-import org.qxp.ctrl.mybatis.xml.po.Mapper;
 import org.qxp.ctrl.util.CommUtil;
 import org.qxp.ctrl.util.Log;
 
@@ -55,7 +54,7 @@ public class WriterDao implements BasicWriter{
 				DaoFile daoFile = (DaoFile) o;
 				String outputFile = daoFile.getFileName() + "-config.xml";
 				XStream xstream = new XStream();
-				xstream.alias("DaoFile", Mapper.class);
+				xstream.alias("DaoFile", DaoFile.class);
 				String xml = xstream.toXML(daoFile);
 				logger.debug(xml);
 				File file = new File(outputPath + "/" + outputFile);
