@@ -10,7 +10,6 @@ public class ReaderDao implements BasicReader{
 
 	public Object readerConfig(String filename) {
 		String xml = IOUtil.ReadFile(filename);
-		System.out.println(xml);
 		XStream xstream = new XStream();
 		xstream.alias("DaoFile", DaoFile.class);
 		DaoFile daoFile = (DaoFile) xstream.fromXML(xml);

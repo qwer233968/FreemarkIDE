@@ -10,7 +10,6 @@ public class ReaderMapper implements BasicReader{
 
 	public Object readerConfig(String filename) {
 		String xml = IOUtil.ReadFile(filename);
-		System.out.println(xml);
 		XStream xstream = new XStream();
 		xstream.alias("Mapper", Mapper.class);
 		Mapper mapper = (Mapper) xstream.fromXML(xml);
