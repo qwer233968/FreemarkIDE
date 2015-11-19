@@ -103,4 +103,22 @@ public class XmlUtil {
         List<Element> list = x.selectNodes(ele);
         return list;
 	}
+	
+	/**
+	 * 判断文本是否为空
+	 * @param root
+	 * @param xpathExpression
+	 * @param text
+	 * @return true: 为null, false: 存在的
+	 */
+	public static boolean isNullByText(Element root, String xpathExpression, String text){
+		List<Element> list = selectNodes_namespace(root, xpathExpression);
+		for(Element ele : list){
+			String ele_text = ele.getText();
+			if(text.equals(ele_text)){
+				return false;
+			}
+		}
+		return true;
+	}
 }
