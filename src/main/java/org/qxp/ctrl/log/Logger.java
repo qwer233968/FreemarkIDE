@@ -22,11 +22,13 @@
  */
 package org.qxp.ctrl.log;
 
+import org.qxp.ctrl.config.SystemConfig;
 import org.qxp.ctrl.log.impl.JdkLoggerFactory;
+
 
 public abstract class Logger { 
 	private static LoggerFactory factory;
-	
+	private static final long LOG_WATCH_DELAY = 60000L;
 	static {
 		initDefaultFactory();
 	}
@@ -56,6 +58,9 @@ public abstract class Logger {
 			String defaultFactory = String.format("%s.impl.Log4jLoggerFactory", Logger.class.getPackage().getName());
 			Class<?> factoryClass = Class.forName(defaultFactory);
 			factory = (LoggerFactory)factoryClass.newInstance();
+			System.out.println(SystemConfig.RELATIVE_PATH + "/src/main/java/org/qxp/ctrl/log/log4j.xml");
+			Log4jInitializer.configureAndWatch(SystemConfig.RELATIVE_PATH + "/src/main/java/org/qxp/ctrl/log/log4j.xml",
+					LOG_WATCH_DELAY);
 			return;
 		} catch (Exception e) {  
 		}
