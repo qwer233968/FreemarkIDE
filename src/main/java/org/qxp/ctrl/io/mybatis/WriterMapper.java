@@ -8,13 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.qxp.ctrl.config.SystemConfig;
 import org.qxp.ctrl.io.BasicWriter;
+import org.qxp.ctrl.log.Logger;
 import org.qxp.ctrl.mybatis.xml.MapperDirective;
 import org.qxp.ctrl.mybatis.xml.po.Mapper;
 import org.qxp.ctrl.util.CommUtil;
-import org.qxp.ctrl.util.Log;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -76,6 +75,6 @@ public class WriterMapper implements BasicWriter{
 		}
 	}
 
-	private static final Logger logger= Log.getLogger(WriterMapper.class);
+	private static final Logger logger = Logger.getLogger(WriterMapper.class);
 
 }

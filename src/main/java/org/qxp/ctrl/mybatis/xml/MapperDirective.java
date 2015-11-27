@@ -5,12 +5,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.qxp.ctrl.log.Logger;
 import org.qxp.ctrl.mybatis.xml.po.Insert;
 import org.qxp.ctrl.mybatis.xml.po.Mapper;
 import org.qxp.ctrl.mybatis.xml.po.Select;
 import org.qxp.ctrl.mybatis.xml.po.Update;
-import org.qxp.ctrl.util.Log;
 
 import freemarker.core.Environment;
 import freemarker.template.ObjectWrapper;
@@ -94,5 +93,5 @@ public class MapperDirective implements TemplateDirectiveModel{
 		 return list;
 	}
 	
-	private static final Logger logger= Log.getLogger(MapperDirective.class);
+	private static final Logger logger = Logger.getLogger(MapperDirective.class);
 }

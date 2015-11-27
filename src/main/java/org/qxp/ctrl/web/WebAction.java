@@ -1,9 +1,8 @@
 package org.qxp.ctrl.web;
 
-import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.Element;
-import org.qxp.ctrl.util.Log;
+import org.qxp.ctrl.log.Logger;
 import org.qxp.ctrl.util.XmlUtil;
 import org.qxp.ctrl.web.po.ContextParam;
 import org.qxp.ctrl.web.po.Listener;
@@ -11,7 +10,7 @@ import org.qxp.ctrl.web.po.Servlet;
 
 public class WebAction {
 
-	private static final Logger logger= Log.getLogger(WebAction.class);
+	private static final Logger logger = Logger.getLogger(WebAction.class);
 	
 	public static boolean addListener(String path, Listener listener){
 		try{

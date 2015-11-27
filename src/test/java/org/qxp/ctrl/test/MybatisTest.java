@@ -30,7 +30,7 @@ public class MybatisTest {
 		wm.writerConfig(mapper);
 	}
 	
-	@Test
+	
 	public void mybatisDaoTest() throws UnsupportedEncodingException, FileNotFoundException{
 		List<DaoFile> list = createDaoFile();
 		WriterDao wd = new WriterDao();

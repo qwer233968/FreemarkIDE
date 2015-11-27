@@ -3,17 +3,16 @@ package org.qxp.ctrl.maven;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.qxp.ctrl.log.Logger;
 import org.qxp.ctrl.maven.po.Dependency;
 import org.qxp.ctrl.maven.po.PomProperty;
-import org.qxp.ctrl.util.Log;
 import org.qxp.ctrl.util.XmlUtil;
 
 public class PomAction {
 	
-	private static final Logger logger= Log.getLogger(PomAction.class);
+	private static final Logger logger = Logger.getLogger(PomAction.class);
 	private static final String PRO_DOM_NAME = "properties";
 	private static final String DEP_DOM_NAME = "dependencies";
 	
@@ -127,32 +126,5 @@ public class PomAction {
         }
 		return false;
 	}
-	
-	/*public static Element createElements(Element dependencies){
-		Properties prop = new Properties();     
-         try{
-             InputStream in = new BufferedInputStream (new FileInputStream("SpringMVC.properties"));
-             prop.load(in);
-             String groupId = prop.getProperty("groupId");
-             String artifactIds = prop.getProperty("artifactId");
-             String version = prop.getProperty("version");
-             String scope = prop.getProperty("scope");
-             String[] artifactIdArray = artifactIds.split(",");
-             for(String artifactId : artifactIdArray){
-            	 dependencies.selectSingleNode("dependency/artifactId");
-            	 Element dependency = dependencies.addElement("dependency");
-            	 dependency.addElement("groupId").setText(groupId);
-            	 dependency.addElement("artifactId").setText(artifactId);
-            	 dependency.addElement("version").setText(version);
-            	 dependency.addElement("scope").setText(scope);
-             }
-             in.close();
-             return dependencies;
-         }
-         catch(Exception e){
-        	 e.printStackTrace();
-        	 return dependencies;
-         }
-	}*/
 	
 }
