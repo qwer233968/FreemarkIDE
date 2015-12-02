@@ -95,17 +95,23 @@ public class IOUtil {
     
     /** 
      * 移动本地文件
-     * @param remoteFilePath 远程文件路径  
-     * @param localFilePath 本地文件路径 
+     * @param remoteFileStr 要移动的文件
+     * @param localFilePath 移动路径
+     * @param localFileStr 移动路径+文件名
      */
-    public static void downloadLocalFile(String remoteFilePath, String localFilePath){
-    	File remoteFile = new File(remoteFilePath);
+    public static void downloadLocalFile(String remoteFileStr, String localFilePath, String localFileStr){
+    	File remoteFile = new File(remoteFileStr);
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
-        File f = new File(localFilePath);
+        File f_path = new File(localFilePath);
+        // 创建文件夹
+        if (!f_path.exists()) {
+        	f_path.mkdirs();
+        }
+        File file = new File(localFileStr);
         try{
             bis = new BufferedInputStream(new FileInputStream(remoteFile));
-            bos = new BufferedOutputStream(new FileOutputStream(f));
+            bos = new BufferedOutputStream(new FileOutputStream(file));
             int len = 2048;
             byte[] b = new byte[len];
             while ((len = bis.read(b)) != -1){
