@@ -6,8 +6,11 @@ import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.qxp.ctrl.util.JarLoadUtil;
@@ -16,17 +19,17 @@ public class DatabaseMetaDateApplication {
 
 	private DatabaseMetaData dbMetaData = null;  
     private Connection con = null;  
+    private boolean specialDB = false;
   
-  
-    public DatabaseMetaDateApplication(String[] jarfiles, String url, String user, String pwd) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {  
-        this.getDatabaseMetaData(jarfiles, url, user, pwd);  
+    public DatabaseMetaDateApplication(String[] jarfiles, String driver, String url, String user, String pwd) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {  
+        this.getDatabaseMetaData(jarfiles, driver, url, user, pwd);  
     }  
   
   
-    private void getDatabaseMetaData(String[] jarfiles, String url, String user, String pwd) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {  
+    private void getDatabaseMetaData(String[] jarfiles, String driverClazz, String url, String user, String pwd) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {  
         	URLClassLoader loader = JarLoadUtil.getURLClassLoader(jarfiles);  
             if (dbMetaData == null) {  
-            	Class<?> clazz = loader.loadClass("com.mysql.jdbc.Driver");  
+            	Class<?> clazz = loader.loadClass(driverClazz);  
             	Driver driver = (Driver)clazz.newInstance(); 
             	Properties p = new Properties();  
             	p.put("user",user);  
@@ -72,7 +75,7 @@ public class DatabaseMetaDateApplication {
     /** 
      * 获得该用户下面的所有表 
      */  
-    public List<String> getAllTableList(String schemaName) {  
+    public List<String> getAllTableList_Normal(String schemaName) {  
         try {  
             // table type. Typical types are "TABLE", "VIEW", "SYSTEM TABLE", "GLOBAL TEMPORARY", "LOCAL TEMPORARY", "ALIAS", "SYNONYM".  
             String[] types = { "TABLE" };  
@@ -80,9 +83,8 @@ public class DatabaseMetaDateApplication {
             List<String> list = new ArrayList<String>();
             while (rs.next()) {  
                 String tableName = rs.getString("TABLE_NAME");  //表名  
-                String tableType = rs.getString("TABLE_TYPE");  //表类型  
-                String remarks = rs.getString("REMARKS");       //表备注  
-                System.out.println(tableName + "-" + tableType + "-" + remarks);  
+                //String tableType = rs.getString("TABLE_TYPE");  //表类型  
+                //String remarks = rs.getString("REMARKS");       //表备注  
                 list.add(tableName);
             }  
             return list;
@@ -92,7 +94,49 @@ public class DatabaseMetaDateApplication {
         }  
     }  
   
-  
+    /** 
+     * 获得该用户下面的所有表 
+     */  
+    public List<String> getAllTableList_Special(String schemaName) {  
+    	ResultSet rs = null;
+    	Statement stmt = null;
+        try {  
+        	stmt = con.createStatement();
+            rs = stmt.executeQuery("select table_name from information_schema.tables  where table_schema = '" + schemaName + "'");
+            List<String> list = new ArrayList<String>();
+            while (rs.next()) {  
+                String tableName = rs.getString("table_name");  //表名  
+                list.add(tableName);
+            }  
+            return list;
+        } catch (SQLException e) {  
+            e.printStackTrace();  
+            return null;
+        }  finally{
+        	try {
+        		if(stmt != null){
+            		stmt.close();
+            	}
+            	if(rs != null){
+    				rs.close();
+            	}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+        }
+    }  
+    
+    /** 
+     * 获得该用户下面的所有表 
+     */  
+    public List<String> getAllTableList(String schemaName) {  
+        if(isSpecialDB()){
+        	return getAllTableList_Special(schemaName);
+        }else{
+        	return getAllTableList_Normal(schemaName);
+        }
+    }  
+    
     /** 
      * 获得该用户下面的所有视图 
      */  
@@ -126,15 +170,13 @@ public class DatabaseMetaDateApplication {
         }     
     }     
   
-  
     /** 
      * 获得表或视图中的所有列信息 
      */  
-    public void getTableColumns(String schemaName, String tableName) {  
-           
+    public Map<String, String> getTableColumns_Normal(String schemaName, String tableName) {  
         try{     
-                  
-            ResultSet rs = dbMetaData.getColumns(null, schemaName, tableName, "%");              
+            ResultSet rs = dbMetaData.getColumns(null, schemaName, tableName, "%"); 
+            Map<String, String> map = new HashMap<String, String>();
             while (rs.next()){  
                     String tableCat = rs.getString("TABLE_CAT");//表目录（可能为空）                  
                     String tableSchemaName = rs.getString("TABLE_SCHEM");//表的架构（可能为空）     
@@ -174,13 +216,60 @@ public class DatabaseMetaDateApplication {
                             + dataType + "-" + dataTypeName + "-" + columnSize + "-" + decimalDigits + "-" + numPrecRadix     
                             + "-" + nullAble + "-" + remarks + "-" + columnDef + "-" + sqlDataType + "-" + sqlDatetimeSub     
                             + charOctetLength + "-" + ordinalPosition + "-" + isNullAble + "-" + isAutoincrement + "-");     
-                }     
-            } catch (SQLException e){  
-                e.printStackTrace();     
-            }  
+                    
+                    map.put(columnName, dataTypeName);
+            }     
+            return map;
+        } catch (SQLException e){  
+            e.printStackTrace();     
+            return null;
+        }  
     }  
+    /** 
+     * 获得表或视图中的所有列信息 
+     */  
+    public Map<String, String> getTableColumns_Special(String tableName) {  
+    	ResultSet rs = null;
+    	Statement stmt = null;
+    	try{     
+    		String sql = "select column_name, data_type from information_schema.columns  where table_name = '"+tableName+"'";
+        	stmt = con.createStatement();
+            rs = stmt.executeQuery(sql);
+            Map<String, String> map = new HashMap<String, String>();
+            while (rs.next()){  
+                    String columnName = rs.getString("column_name");//列名  
+                    String dataTypeName = rs.getString("data_type");//java.sql.Types类型   名称  
+                    map.put(columnName, dataTypeName);
+            }     
+            return map;
+        } catch (SQLException e){  
+            e.printStackTrace();     
+            return null;
+        }  finally{
+        	try {
+        		if(stmt != null){
+            		stmt.close();
+            	}
+            	if(rs != null){
+    				rs.close();
+            	}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+        }
+    } 
   
-  
+    /** 
+     * 获得表或视图中的所有列信息 
+     */  
+    public Map<String, String> getTableColumns(String schemaName, String tableName) {  
+    		if(isSpecialDB()){
+    			return getTableColumns_Special(tableName);
+    		}else{
+    			return getTableColumns_Normal(schemaName, tableName);
+    		}
+    } 
+    
     /** 
      * 获得一个表的索引信息 
      */  
@@ -284,10 +373,21 @@ public class DatabaseMetaDateApplication {
         try {  
             if (con != null) {  
                 con.close();  
+                con = null;
             }  
         } catch (SQLException e) {  
             e.printStackTrace();  
         }  
-    }  
+    }
+
+
+	public boolean isSpecialDB() {
+		return specialDB;
+	}
+
+
+	public void setSpecialDB(boolean specialDB) {
+		this.specialDB = specialDB;
+	}  
   
 }

@@ -28,6 +28,8 @@ public class SystemConfig {
 	
 	public static final String DAO_PACKAGE_NAME = "dao";
 	
+	public static final String ENTRY_PACKAGE_NAME = "entry";
+	
 	private String projectName;
 	
 	private String projectType;

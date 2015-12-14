@@ -1,0 +1,12 @@
+<@entry>
+package ${file.packageName}
+
+public class ${file.fileName} {
+
+	<#list file.properties as pro>
+	private ${pro.proType} ${pro.proName};
+	
+	</#list>
+	
+</@entry>
+}

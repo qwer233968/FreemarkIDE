@@ -1,6 +1,7 @@
 package org.qxp.ctrl.test;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.qxp.ctrl.mysql.DatabaseMetaDateApplication;
@@ -9,14 +10,16 @@ public class DBTest {
 
 	@Test
 	public void test(){
-		String[] jarfiles = {"D:/work_svn/app/WarningServer_test/mysql-connector-java-5.1.6.jar"};
-		String url = "jdbc:mysql://192.168.7.54:3306/step_app";
-		String user = "root";
-		String pwd = "48e6dba3da";
+		String[] jarfiles = {"file://D:/maven/repo/org/srdbsql/srdbsql.Driver/1.0/srdbsql.Driver-1.0.jar"};
+		String url = "jdbc:srdbsql://10.168.220.95:1975/ceshidb";
+		String user = "dba";
+		String pwd = "dba";
+		String driver = "org.srdbsql.Driver";
 		try {
-			DatabaseMetaDateApplication dm = new DatabaseMetaDateApplication(jarfiles, url, user, pwd);
-			List<String> list = dm.getAllTableList(null);
-			System.out.println(list.size());
+			DatabaseMetaDateApplication dm = new DatabaseMetaDateApplication(jarfiles, driver, url, user, pwd);
+			dm.setSpecialDB(true);
+			List<String> list = dm.getAllTableList("public");
+			Map<String,String> map = dm.getTableColumns(null, "t_product_account");
 			dm.colseCon();
 		} catch (Exception e) {
 			e.printStackTrace();

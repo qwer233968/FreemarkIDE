@@ -13,9 +13,9 @@ public class IOTest {
 	
 	@Test
 	public void testLocalDown(){
-		String remoteFilePath = "D:/soft/gitWork/resources/spring/spring-mvc.xml";
+		/*String remoteFilePath = "D:/soft/gitWork/resources/spring/spring-mvc.xml";
 		String localFilePath = "D:/soft/gitWork/FreemarkIDE/src/test/resources";
 		String localFileStr = "D:/soft/gitWork/FreemarkIDE/src/test/resources/spring-mvc.xml";
 		IOUtil.downloadLocalFile(remoteFilePath, localFilePath, localFileStr);
-	}
+	*/}
 }

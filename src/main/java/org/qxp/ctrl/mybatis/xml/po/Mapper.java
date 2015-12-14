@@ -16,6 +16,8 @@ public class Mapper {
 	
 	private List<Select> selectList;
 
+	private ResultMap map;
+	
 	public String getNamespace() {
 		return namespace;
 	}
@@ -62,6 +64,14 @@ public class Mapper {
 
 	public void setSuffix(String suffix) {
 		this.suffix = suffix;
+	}
+
+	public ResultMap getMap() {
+		return map;
+	}
+
+	public void setMap(ResultMap map) {
+		this.map = map;
 	}
 
 	
