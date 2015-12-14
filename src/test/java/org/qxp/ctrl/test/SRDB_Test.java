@@ -15,7 +15,6 @@ import org.qxp.ctrl.mybatis.xml.po.MapProperties;
 import org.qxp.ctrl.mybatis.xml.po.Mapper;
 import org.qxp.ctrl.mybatis.xml.po.ResultMap;
 import org.qxp.ctrl.mybatis.xml.po.Select;
-import org.qxp.ctrl.mybatis.xml.po.Update;
 import org.qxp.ctrl.mysql.DatabaseMetaDateApplication;
 
 public class SRDB_Test {
@@ -31,6 +30,7 @@ public class SRDB_Test {
 			DatabaseMetaDateApplication dm = new DatabaseMetaDateApplication(jarfiles, driver, url, user, pwd);
 			dm.setSpecialDB(true);
 			createEntry(dm);
+			createMapper(dm);
 			dm.colseCon();
 			
 		} catch (Exception e) {
@@ -88,18 +88,22 @@ public class SRDB_Test {
 			remap.setType("com.test.entry." + tableName);
 			remap.setMapProperties(mapProperties);
 			
-			
+			String colum_str = resultMapToString(mapProperties);
+			String params_str = paramsToString(mapProperties);
 			List<Select> selectList = new ArrayList<Select>();
 			Select sel = new Select();
 			sel.setId("find"+tableName);
 			sel.setResultMap(tableName + "Map");
-			sel.setSql("select * from tb_user1");
+			sel.setSql("select " + colum_str + " from " + tableName);
 			sel.setFlushCache("false");
-			
 			selectList.add(sel);
+			
 			List<Insert> insertList = new ArrayList<Insert>();
 			Insert ins = new Insert();
-			
+			ins.setParameterType("java.util.Map");
+			ins.setId("add"+tableName);
+			ins.setSql("insert into " + tableName + " values(" + params_str + ")");
+			ins.setFlushCache("false");
 			insertList.add(ins);
 			
 			mapper.setMap(remap);
@@ -114,7 +118,21 @@ public class SRDB_Test {
 		wm.writerTemplate(list);
 	}
 	
-	public void resultMapToString(ResultMap remap){
-		
+	public String resultMapToString(List<MapProperties> mapProperties){
+		StringBuffer sb = new StringBuffer();
+		for(MapProperties mp : mapProperties){
+			sb.append(mp.getColumn()).append(",");
+		}
+		sb.delete(sb.length() - 1, sb.length());
+		return sb.toString();
+	}
+	
+	public String paramsToString(List<MapProperties> mapProperties){
+		StringBuffer sb = new StringBuffer();
+		for(MapProperties mp : mapProperties){
+			sb.append("#{").append(mp.getColumn()).append("},");
+		}
+		sb.delete(sb.length() - 1, sb.length());
+		return sb.toString();
 	}
 }

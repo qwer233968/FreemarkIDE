@@ -3,6 +3,12 @@
 <@mapper>
 <mapper namespace="${namespace}">
 
+	<resultMap id="${resultMap.id}" type="${resultMap.type}">
+		<#list resultMap.mapProperties as respro>
+			<result column="${respro.column}" property="${respro.property}"/>
+		</#list>
+    </resultMap>
+    
 		<#list selectList as sl>
 			<select ${sl.toString()} <#if sl.resultType?exists>resultType="${sl.resultType}"</#if> <#if sl.flushCache?exists>flushCache="${sl.flushCache}"</#if> <#if sl.resultMap?exists>resultMap="${sl.resultMap}"</#if> <#if sl.parameterType?exists>parameterType="${sl.parameterType}"</#if><#if sl.statementType?exists>statementType="${sl.statementType}"</#if> >
     				${sl.sql}
