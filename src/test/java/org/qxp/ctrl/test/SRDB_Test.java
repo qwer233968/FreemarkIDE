@@ -81,7 +81,7 @@ public class SRDB_Test {
 			    Map.Entry<String,String> entry = entries.next();  
 			    MapProperties mp = new MapProperties();
 			    mp.setColumn(entry.getKey());
-			    mp.setProperty(entry.getValue());
+			    mp.setProperty(entry.getKey());
 			    mapProperties.add(mp);
 			}  
 			remap.setId(tableName + "Map");
