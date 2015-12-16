@@ -59,7 +59,11 @@ public class CommUtil {
               
             //获取模板,并设置编码方式，这个编码必须要与页面中的编码格式一致  
             Template template=config.getTemplate(templateName,templateEncoding);  
-            
+            File outpath =new File(outputPath);    
+	          //如果文件夹不存在则创建    
+	        if  (!outpath .exists()  && !outpath .isDirectory()) {       
+	        	outpath.mkdir();    
+	        }
             //合并数据模型与模板  
             Writer writer = new OutputStreamWriter(
     				new FileOutputStream(outputPath + "/" + outputFile),"UTF-8");
