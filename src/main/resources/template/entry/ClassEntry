@@ -1,5 +1,5 @@
 <@entry>
-package ${file.packageName}
+package ${file.packageName};
 
 public class ${file.fileName} {
 

@@ -26,11 +26,16 @@ public class SRDB_Test {
 		String user = "dba";
 		String pwd = "dba";
 		String driver = "org.srdbsql.Driver";
+		
+		String entry_path = "E:/test_channel/djr_channel_model/src/main/java";
+		String entry_pac = "com.xinhe99.channel.testmodel";
+		String mapper_path = "E:/test_channel/djr_channel_dao/src/main/resources/test-mappers";
+		
 		try {
 			DatabaseMetaDateApplication dm = new DatabaseMetaDateApplication(jarfiles, driver, url, user, pwd);
 			dm.setSpecialDB(true);
-			createEntry(dm);
-			createMapper(dm);
+			createEntry(dm, entry_path, entry_pac);
+			createMapper(dm, mapper_path, entry_pac);
 			dm.colseCon();
 			
 		} catch (Exception e) {
@@ -38,7 +43,7 @@ public class SRDB_Test {
 		}
 	}
 	
-	public void createEntry(DatabaseMetaDateApplication dm){
+	public void createEntry(DatabaseMetaDateApplication dm, String entry_path, String entry_pac){
 		List<EntryFile> list = new ArrayList<EntryFile>();
 		List<String> tableNamelist = dm.getAllTableList("public");
 		for(String tableName : tableNamelist){
@@ -46,13 +51,14 @@ public class SRDB_Test {
 			List<EntryProperties> properties  = getEntryProperties(map);
 			EntryFile ef = new EntryFile();
 			ef.setFileName(tableName);
-			ef.setPackageName("com.test.entry");
+			ef.setPackageName(entry_pac);
 			ef.setSuffix("java");
 			ef.setProperties(properties);
 			list.add(ef);
 		}
+		String path = entry_path + "/" + pacToPath(entry_pac);
 		WriterEntry we = new WriterEntry();
-		we.writerTemplate(list);
+		we.writerTemplate(list, path);
 	}
 	public List<EntryProperties> getEntryProperties(Map<String,String> map){
 		List<EntryProperties> properties = new ArrayList<EntryProperties>();
@@ -67,7 +73,7 @@ public class SRDB_Test {
 		return properties;
 	}
 	
-	public void createMapper(DatabaseMetaDateApplication dm){
+	public void createMapper(DatabaseMetaDateApplication dm, String mapper_path, String entry_pac){
 		List<Mapper> list = new ArrayList<Mapper>();
 		List<String> tableNamelist = dm.getAllTableList("public");
 		for(String tableName : tableNamelist){
@@ -85,7 +91,7 @@ public class SRDB_Test {
 			    mapProperties.add(mp);
 			}  
 			remap.setId(tableName + "Map");
-			remap.setType("com.test.entry." + tableName);
+			remap.setType(entry_pac + "." + tableName);
 			remap.setMapProperties(mapProperties);
 			
 			String colum_str = resultMapToString(mapProperties);
@@ -115,7 +121,7 @@ public class SRDB_Test {
 			list.add(mapper);
 		}
 		WriterMapper wm = new WriterMapper();
-		wm.writerTemplate(list);
+		wm.writerTemplate(list, mapper_path);
 	}
 	
 	public String resultMapToString(List<MapProperties> mapProperties){
@@ -133,6 +139,15 @@ public class SRDB_Test {
 			sb.append("#{").append(mp.getColumn()).append("},");
 		}
 		sb.delete(sb.length() - 1, sb.length());
+		return sb.toString();
+	}
+	
+	public String pacToPath(String pacName){
+		String[] pathArray = pacName.split("\\.");
+		StringBuffer sb = new StringBuffer();
+		for(String path : pathArray){
+			sb.append(path).append("/");
+		}
 		return sb.toString();
 	}
 }

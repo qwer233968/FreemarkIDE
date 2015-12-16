@@ -13,11 +13,15 @@ import org.qxp.ctrl.util.CommUtil;
 
 public class WriterEntry implements BasicWriter{
 
-	public boolean writerTemplate(List<?> list) {
+	public boolean writerTemplate(List<?> list, String outPath) {
 		try{
 			String readPath = SystemConfig.RELATIVE_PATH + "/src/main/resources/template/entry";
 			String readFile = "ClassEntry";
 			String outputPath = SystemConfig.PROJECT_OUTPUT + "/" + SystemConfig.ENTRY_PACKAGE_NAME;
+			if(null != outPath){
+				outputPath = outPath;
+			}
+			
 			String charset = "utf-8";
 			logger.debug(outputPath);
 			

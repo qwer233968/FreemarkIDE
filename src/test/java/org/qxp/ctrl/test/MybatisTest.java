@@ -26,7 +26,7 @@ public class MybatisTest {
 	public void mybatisXmlTest() throws IOException, TemplateException {
 		List<Mapper> mapper = createMapper();
 		WriterMapper wm = new WriterMapper();
-		wm.writerTemplate(mapper);
+		wm.writerTemplate(mapper, null);
 		wm.writerConfig(mapper);
 	}
 	
@@ -34,7 +34,7 @@ public class MybatisTest {
 	public void mybatisDaoTest() throws UnsupportedEncodingException, FileNotFoundException{
 		List<DaoFile> list = createDaoFile();
 		WriterDao wd = new WriterDao();
-		wd.writerTemplate(list);
+		wd.writerTemplate(list, null);
 		wd.writerConfig(list);
 	}
 	

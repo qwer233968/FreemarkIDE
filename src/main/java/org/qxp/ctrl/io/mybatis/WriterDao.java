@@ -19,11 +19,14 @@ import com.thoughtworks.xstream.XStream;
 
 public class WriterDao implements BasicWriter{
 
-	public boolean writerTemplate(List<?> list) {
+	public boolean writerTemplate(List<?> list, String outPath) {
 		try{
 			String readPath = SystemConfig.RELATIVE_PATH + "/src/main/resources/template/mybatis";
 			String readFile = "mybatis.dao";
 			String outputPath = SystemConfig.PROJECT_OUTPUT + "/" + SystemConfig.DAO_PACKAGE_NAME;
+			if(null != outPath){
+				outputPath = outPath;
+			}
 			String charset = "utf-8";
 			logger.debug(outputPath);
 			

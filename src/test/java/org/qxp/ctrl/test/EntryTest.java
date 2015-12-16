@@ -14,7 +14,7 @@ public class EntryTest {
 	public void test(){
 		List<EntryFile> list = createList();
 		WriterEntry we = new WriterEntry();
-		we.writerTemplate(list);
+		we.writerTemplate(list, null);
 	}
 	
 	public List<EntryFile> createList(){
