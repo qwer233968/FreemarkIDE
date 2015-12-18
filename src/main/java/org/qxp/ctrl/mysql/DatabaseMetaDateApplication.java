@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.qxp.ctrl.util.CharUtil;
 import org.qxp.ctrl.util.JarLoadUtil;
 
 public class DatabaseMetaDateApplication {
@@ -238,8 +239,11 @@ public class DatabaseMetaDateApplication {
             Map<String, String> map = new HashMap<String, String>();
             while (rs.next()){  
                     String columnName = rs.getString("column_name");//列名  
-                    String dataTypeName = rs.getString("data_type");//java.sql.Types类型   名称  
-                    map.put(columnName, dataTypeName);
+                    String dataTypeName = rs.getString("data_type");//java.sql.Types类型   名称
+                    boolean isChinese = CharUtil.isChinese(columnName);
+                    if(!isChinese){
+                    	map.put(columnName, dataTypeName);
+                    }
             }     
             return map;
         } catch (SQLException e){  

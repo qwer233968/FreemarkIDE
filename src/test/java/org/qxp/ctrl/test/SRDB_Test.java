@@ -16,6 +16,10 @@ import org.qxp.ctrl.mybatis.xml.po.Mapper;
 import org.qxp.ctrl.mybatis.xml.po.ResultMap;
 import org.qxp.ctrl.mybatis.xml.po.Select;
 import org.qxp.ctrl.mysql.DatabaseMetaDateApplication;
+import org.qxp.ctrl.util.CommUtil;
+import org.qxp.ctrl.util.ImportUtil;
+import org.qxp.ctrl.util.JAVAConstant;
+import org.qxp.ctrl.util.SRDBConstant;
 
 public class SRDB_Test {
 
@@ -43,7 +47,7 @@ public class SRDB_Test {
 		}
 	}
 	
-	public void createEntry(DatabaseMetaDateApplication dm, String entry_path, String entry_pac){
+	public void createEntry(DatabaseMetaDateApplication dm, String entry_path, String entry_pac) throws IllegalArgumentException, IllegalAccessException{
 		List<EntryFile> list = new ArrayList<EntryFile>();
 		List<String> tableNamelist = dm.getAllTableList("public");
 		for(String tableName : tableNamelist){
@@ -54,20 +58,22 @@ public class SRDB_Test {
 			ef.setPackageName(entry_pac);
 			ef.setSuffix("java");
 			ef.setProperties(properties);
+			ef.setImportList(ImportUtil.getEntryImport(properties));
 			list.add(ef);
 		}
-		String path = entry_path + "/" + pacToPath(entry_pac);
+		String path = entry_path + "/" + CommUtil.pacToPath(entry_pac);
 		WriterEntry we = new WriterEntry();
 		we.writerTemplate(list, path);
 	}
-	public List<EntryProperties> getEntryProperties(Map<String,String> map){
+	public List<EntryProperties> getEntryProperties(Map<String,String> map) throws IllegalArgumentException, IllegalAccessException{
 		List<EntryProperties> properties = new ArrayList<EntryProperties>();
 		Iterator<Map.Entry<String,String>> entries = map.entrySet().iterator();  
 		while (entries.hasNext()) {  
 		    Map.Entry<String,String> entry = entries.next();  
 		    EntryProperties ep = new EntryProperties();
 		    ep.setProName(entry.getKey());
-		    ep.setProType(entry.getValue());
+		    Object obj = CommUtil.columToJava(entry.getValue(), SRDBConstant.class, JAVAConstant.class);
+		    ep.setProType(obj.toString());
 		    properties.add(ep);
 		}  
 		return properties;
@@ -94,8 +100,8 @@ public class SRDB_Test {
 			remap.setType(entry_pac + "." + tableName);
 			remap.setMapProperties(mapProperties);
 			
-			String colum_str = resultMapToString(mapProperties);
-			String params_str = paramsToString(mapProperties);
+			String colum_str = CommUtil.resultMapToString(mapProperties);
+			String params_str =CommUtil.paramsToString(mapProperties);
 			List<Select> selectList = new ArrayList<Select>();
 			Select sel = new Select();
 			sel.setId("find"+tableName);
@@ -124,30 +130,5 @@ public class SRDB_Test {
 		wm.writerTemplate(list, mapper_path);
 	}
 	
-	public String resultMapToString(List<MapProperties> mapProperties){
-		StringBuffer sb = new StringBuffer();
-		for(MapProperties mp : mapProperties){
-			sb.append(mp.getColumn()).append(",");
-		}
-		sb.delete(sb.length() - 1, sb.length());
-		return sb.toString();
-	}
 	
-	public String paramsToString(List<MapProperties> mapProperties){
-		StringBuffer sb = new StringBuffer();
-		for(MapProperties mp : mapProperties){
-			sb.append("#{").append(mp.getColumn()).append("},");
-		}
-		sb.delete(sb.length() - 1, sb.length());
-		return sb.toString();
-	}
-	
-	public String pacToPath(String pacName){
-		String[] pathArray = pacName.split("\\.");
-		StringBuffer sb = new StringBuffer();
-		for(String path : pathArray){
-			sb.append(path).append("/");
-		}
-		return sb.toString();
-	}
 }

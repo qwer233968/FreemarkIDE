@@ -14,7 +14,7 @@ public class Import {
 
 	@Override
 	public String toString() {
-		return "import " + this.name;
+		return "import " + this.name + ";";
 	}
 	
 	

@@ -1,6 +1,10 @@
 <@entry>
 package ${file.packageName};
 
+<#list file.importList as import>
+${import.toString()}
+</#list>
+
 public class ${file.fileName} {
 
 	<#list file.properties as pro>

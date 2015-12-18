@@ -5,7 +5,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
+
+import org.qxp.ctrl.mybatis.xml.po.MapProperties;
 
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
@@ -77,4 +81,48 @@ public class CommUtil {
         }  
     }  
    
+    public static String resultMapToString(List<MapProperties> mapProperties){
+		StringBuffer sb = new StringBuffer();
+		for(MapProperties mp : mapProperties){
+			sb.append(mp.getColumn()).append(",");
+		}
+		if(sb.length() >= 1){
+			sb.delete(sb.length() - 1, sb.length());
+		}
+		return sb.toString();
+	}
+	
+	public static String paramsToString(List<MapProperties> mapProperties){
+		StringBuffer sb = new StringBuffer();
+		for(MapProperties mp : mapProperties){
+			sb.append("#{").append(mp.getColumn()).append("},");
+		}
+		if(sb.length() >= 1){
+			sb.delete(sb.length() - 1, sb.length());
+		}
+		return sb.toString();
+	}
+	
+	public static String pacToPath(String pacName){
+		String[] pathArray = pacName.split("\\.");
+		StringBuffer sb = new StringBuffer();
+		for(String path : pathArray){
+			sb.append(path).append("/");
+		}
+		return sb.toString();
+	}
+	
+	public static Object columToJava(String colum, Class<?> original, Class<?> target) throws IllegalArgumentException, IllegalAccessException{
+		Field[] originalfield = original.getDeclaredFields();
+		Field[] targetfield = target.getDeclaredFields();
+		Object targetval = colum;
+        for (int i = 0; i < originalfield.length; i++) {
+        	originalfield[i].setAccessible(true); 
+            Object val = originalfield[i].get(original);
+            if(val.equals(colum)){
+            	targetval = targetfield[i].get(target);
+            }
+        }
+        return targetval;
+	}
 }
